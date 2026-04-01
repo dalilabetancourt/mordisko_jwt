@@ -1,0 +1,34 @@
+{
+  "name": "mordisko",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --env-file=env ./src/index.js",
+    "start": "node ./src/index.js"
+  
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dalilabetancourt/mordisko-.git"
+  },
+  "keywords": [],
+  "author": "Dalila Betancourt",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/dalilabetancourt/mordisko-/issues"
+  },
+  "homepage": "https://github.com/dalilabetancourt/mordisko-#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-handlebars": "^8.0.7",
+    "pg": "^8.20.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.0",
+    "nodemon": "^3.1.14"
+  }
+}
