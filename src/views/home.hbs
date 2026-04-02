@@ -1,1 +1,43 @@
-<h2>pagina home</h2>
+<h2 class="text-center mt-4">🍦 Heladería Mordisko</h2>
+
+<h4 class="text-center mb-4">{{pageTitle}}</h4>
+
+<section class="grid">
+
+    {{#if products.length}}
+
+    {{#each products}}
+    <div class="card">
+
+        <h3>{{this.nombre}}</h3>
+
+        <p>{{this.descripcion}}</p>
+
+        <p class="precio">$ {{this.precio}}</p>
+
+        <span class="categoria">{{this.categoria}}</span>
+
+        <!-- EDITAR -->
+        <a href="/editar/{{this.id}}" class="btn-editar">
+            Editar
+        </a>
+        
+        <!-- ELIMINAR -->
+        <form action="/eliminar/{{this.id}}" method="POST">
+            <button type="submit" class="btn-eliminar">
+                Eliminar
+            </button>
+        </form>
+
+
+    </div>
+    {{/each}}
+
+</section>
+
+{{else}}
+<p class="text-center">No hay productos disponibles 😢</p>
+{{/if}}
+
+</div>
+</div>

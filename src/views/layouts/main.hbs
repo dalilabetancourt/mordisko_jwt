@@ -1,14 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{pageTitle}} - Mordisko</title>
+    <title>{{pageTitle}}</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
-    {{{body}}}
 
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
 
+            <!-- LOGO -->
+            <div class="logo">
+                <a href="/">Heladería Mordisko 🍦</a>
+            </div>
+
+            <!-- NAV -->
+            <nav class="nav">
+                <ul>
+                    <li><a href="/crearCategorias">Crear categorías</a></li>
+                    <li><a href="/Productos">Productos</a></li>
+                    <li><a href="/crear-producto">Crear producto</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- CONTENIDO DINÁMICO -->
+    <main class="container">
+        {{{body}}}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 Heladería Mordisko</p>
+    </footer>
 
 </body>
+
 </html>
