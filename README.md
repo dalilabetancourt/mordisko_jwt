@@ -41,22 +41,36 @@ Este proyecto forma parte del desarrollo progresivo del módulo 7, enfocado en e
 mordisko-app/
 │
 ├── public/
-│   └── css/
-│       └── style.css
+│ └── css/
+│ └── style.css
+│ 
+├── config
+│ └── db.js
 │
+├── moldels
+│ ├── categorria.js
+│ ├── index.js
+│ └── productos.js
+│ 
+│── controller
+│ ├── mordiskoController.js
+│ 
+│ 
 ├── views/
-│   ├── layouts/
-│   │   └── main.handlebars
-│   ├── home.handlebars
-│   ├── crear-categoria.handlebars
-│   └── crear-producto.handlebars
+│ ├── layouts/
+│ │ └── main.hbs
+│ ├── home.hbs
+│ ├── formEditar.hbs
+│ ├── formCategoria.hbs
+│ └── formProductos.hbs
 │
 ├── routes/
-│   └── (rutas del proyecto)
+│ └── (rutas del proyecto)
 │
-├── app.js / server.js
+├── index.js
 │
 └── package.json
+
 
 
 ---
