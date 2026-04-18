@@ -8,7 +8,8 @@ import {
     deleteProducto,
     getFormEditarProducto,
     updateProducto,
-   getAuth
+   getAuth,
+   eStaloguado
 } from '../controllers/mordiskoController.js'
 
 const router = express.Router()
@@ -22,17 +23,20 @@ router.post('/login', getAuth.loginPost);     // Procesa el login
 router.get('/register', getAuth.showRegister); // Muestra el registro (nuvo usuario)
 router.post('/register', getAuth.register);   // Procesa el registro
 
+// Ruta para cerrar sesión
+router.get('/logout', getAuth.logout);
+
 // categorias
-router.get('/crear-categoria', getFormCategoria)
-router.post('/crear-categoria', saveCategoria)
+router.get('/crear-categoria', eStaloguado, getFormCategoria)
+router.post('/crear-categoria', eStaloguado, saveCategoria)
 
 // productos
-router.get('/crear-producto', getFormProducto)
-router.post('/crear-producto', saveProducto)
+router.get('/crear-producto', eStaloguado, getFormProducto)
+router.post('/crear-producto', eStaloguado, saveProducto)
 
 //editar producto
-router.get('/editar-producto/:id', getFormEditarProducto)
-router.post('/editar-producto/:id', updateProducto)
+router.get('/editar-producto/:id', eStaloguado, getFormEditarProducto)
+router.post('/editar-producto/:id', eStaloguado, updateProducto)
 
 //eliminar producto
 router.post('/eliminar-producto/:id', deleteProducto)

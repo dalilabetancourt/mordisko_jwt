@@ -3,44 +3,28 @@ import { Categoria, Productos, User } from "../models/index.js"
 import bcrypt, { truncates } from "bcryptjs";
 
 //registro
-// src/controllers/mordiskoController.js
 
 const getAuth = {
-    // GET: Mostrar el login
-    showLogin: (req, res) => {
-        res.render('login');
-    },
-    // GET: Mostrar el registro
-    showRegister: (req, res) => {
-        res.render('register'); // Asegúrate que el archivo se llame registro.hbs
-    },
-    // POST: Procesar el registro (Cambiado de 'showRegister' a 'register')
+    showLogin: (req, res) => res.render('login'),
+    showRegister: (req, res) => res.render('register'),
+    
     register: async (req, res) => {
         try {
             const { email, password } = req.body;
-            // Usamos 'bcrypt' que es como lo importaste arriba
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
-
-            await User.create({
-                email,
-                password: hashedPassword
-            });
+            await User.create({ email, password: hashedPassword });
 
             res.render('resultado', {
                 mensaje: "Usuario registrado con éxito. ¡Inicia sesión!",
                 esExito: true
             });
         } catch (error) {
-            console.error('Error en el registro:', error);
-            res.render('resultado', {
-                mensaje: 'Error al registrarse. Puede que el correo ya esté en uso.',
-                esExito: false
-            });
+            res.render('resultado', { mensaje: 'Error al registrarse', esExito: false });
         }
     },
-    // POST: Procesar el login
-    loginPost: async(req, res) => {
+
+    loginPost: async (req, res) => {
         try {
             const { email, password } = req.body;
             const user = await User.findOne({ where: { email }, raw: true });
@@ -50,22 +34,32 @@ const getAuth = {
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
+            
             if (isMatch) {
-                // [Inferencia] Usamos backticks (`) para el template string correctamente
-                res.render('resultado', {
-                    mensaje: `¡Bienvenido al sistema ${user.email}!`,
-                    esExito: true
-                });
+                req.session.user = { id: user.id, email: user.email };
+                return res.redirect('/'); 
             } else {
-                res.render('resultado', { mensaje: 'Credenciales incorrectas', esExito: false });
+                return res.render('resultado', { mensaje: 'Credenciales incorrectas', esExito: false });
             }
         } catch (error) {
             res.status(500).send('Error del servidor');
         }
+    },
+
+    logout: (req, res) => {
+        req.session.destroy(() => {
+            res.redirect('/login');
+        });
     }
 };
 
-
+// AGREGA ESTO AL FINAL DEL ARCHIVO PARA QUE TUS RUTAS LO ENCUENTREN
+export const eStaloguado = (req, res, next) => {
+    if (req.session && req.session.user) {
+        return next();
+    }
+    res.redirect('/login');
+};
 //productos 
 const home = async (req, res) => {
     try {
