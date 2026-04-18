@@ -38,38 +38,38 @@ Este proyecto forma parte del desarrollo progresivo del módulo 7, enfocado en e
 ---
 
 ## 🗂️ Estructura del proyecto
-mordisko-app/
-│
-├── public/
-│ └── css/
-│ └── style.css
-│ 
-├── config
-│ └── db.js
-│
-├── moldels
-│ ├── categorria.js
-│ ├── index.js
-│ └── productos.js
-│ 
-│── controller
-│ ├── mordiskoController.js
-│ 
-│ 
-├── views/
-│ ├── layouts/
-│ │ └── main.hbs
-│ ├── home.hbs
-│ ├── formEditar.hbs
-│ ├── formCategoria.hbs
-│ └── formProductos.hbs
-│
-├── routes/
-│ └── (rutas del proyecto)
-│
-├── index.js
-│
-└── package.json
+
+    mordisko-app/
+    │
+    ├── public/
+    │   └── css/
+    │       └── style.css
+    │
+    ├── config/
+    │   └── db.js
+    │
+    ├── models/
+    │   ├── categoria.js
+    │   ├── index.js
+    │   └── productos.js
+    │
+    ├── controller/
+    │   └── mordiskoController.js
+    │
+    ├── views/
+    │   ├── layouts/
+    │   │   └── main.hbs
+    │   ├── home.hbs
+    │   ├── formEditar.hbs
+    │   ├── formCategoria.hbs
+    │   └── formProductos.hbs
+    │
+    ├── routes/
+    │   └── (rutas del proyecto)
+    │
+    ├── index.js
+    │
+    └── package.json
 
 
 

@@ -3,6 +3,7 @@ import { create } from 'express-handlebars'
 import mordiskoRoter from './routes/mordiskoRoutes.js'
 import db from './config/db.js'
 import path from 'path'
+import bcryptjs from 'bcryptjs'
 
 const __dirname = path.resolve();
 const app = express();

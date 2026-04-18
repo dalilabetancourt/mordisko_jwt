@@ -1,6 +1,16 @@
 import { raw } from "express"
-import { Categoria, Productos } from "../models/index.js"
+import { Categoria, Productos, User } from "../models/index.js"
+import bcrypt from 'bcryptjs'
 
+//login
+const auth = (req, res)=>{
+    login:(req, res)=>{
+    res.render('login');
+    }
+};
+
+
+//productos 
 const home = async (req, res) => {
     try {
  const poductos = await Productos.findAll({ raw: true })
@@ -119,5 +129,6 @@ export {
     saveProducto,
     deleteProducto,
     getFormEditarProducto,
-    updateProducto
+    updateProducto,
+    auth 
 }

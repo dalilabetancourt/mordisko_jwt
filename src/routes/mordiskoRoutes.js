@@ -7,12 +7,17 @@ import {
     saveProducto,
     deleteProducto,
     getFormEditarProducto,
-    updateProducto
+    updateProducto,
+    auth
 } from '../controllers/mordiskoController.js'
 
 const router = express.Router()
 
 router.get('/', home)
+
+//login
+router.get('/login', auth)
+
 
 // categorias
 router.get('/crear-categoria', getFormCategoria)
