@@ -21,10 +21,11 @@
   "homepage": "https://github.com/dalilabetancourt/tienda_mordisko#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
     "express-fileupload": "^1.5.2",
     "express-handlebars": "^8.0.7",
-    "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.8"

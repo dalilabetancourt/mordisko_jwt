@@ -1,8 +1,8 @@
 import express from 'express'
-import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
 import exphbs from 'express-handlebars'
-import { setupPrimary } from 'node:cluster';
+import jwt from 'jsonwebtoken'; 
 import mordiskoRoter from './routes/mordiskoRoutes.js'
 import db from './config/db.js'
 import path from 'path'
@@ -11,35 +11,40 @@ const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT || 4007;
 
-// 1. Middlewares 
+// 1. Middlewares de parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Indispensable para JWT
 
-//configuracion de Express-fileUpload
+// 2. Configuración de Express-fileUpload
 app.use(fileUpload({
     createParentPath: true, 
-    limits: { fileSize: 2 * 1024 * 1024 }, // Límite de 2MB
+    limits: { fileSize: 2 * 1024 * 1024 }, 
     abortOnLimit: true,
-    responseOnLimit:"El tamaño del archivo ha superado el limite permitido"
+    responseOnLimit: "El tamaño del archivo ha superado el límite permitido"
 }));
 
-//  Archivos estáticos
+// 3. Archivos estáticos
 app.use(express.static(path.join(process.cwd(), 'src', 'public')));
 
-// Configuración de Sesión (DEBE ir antes de las rutas)
-app.use(session({
-    secret: 'mordisko-key-2026',
-    resave: false,
-    saveUninitialized: false
-}));
-
-// Pasar sesión a las vistas (res.locals)
+// 4. Middleware de JWT para res.locals
 app.use((req, res, next) => {
-    res.locals.user = req.session.user || null;
+    const token = req.cookies.token;
+    if (token) {
+        try {
+            // Decodificamos el token para que {{user}} funcione en .hbs
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'palabra_secreta_provisional');
+            res.locals.user = decoded; 
+        } catch (error) {
+            res.locals.user = null;
+        }
+    } else {
+        res.locals.user = null;
+    }
     next();
 });
 
-// Handlebars
+// 5. Handlebars
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "src/views"));
 
@@ -47,34 +52,30 @@ app.engine(
   "hbs",
   exphbs.engine({
     defaultLayout: "main",
-    layoutDir: path.join(__dirname, "src/views/layouts"),
+    layoutsDir: path.join(__dirname, "src/views/layouts"), 
     extname: ".hbs",
-   
     helpers: {
       eq: (a, b) => a === b
     }
   }),
 );
-// DB Connection
+
+// 6. Rutas
+app.use('/', mordiskoRoter);
+
+// 7. DB Connection & Server Start
 async function startServer() {
     try {
         await db.authenticate();
-        await db.sync({ alter: true }); // <--- Esto es lo que te salvará el Home
-        console.log('Conexión a la DB lista');
+        await db.sync({ alter: true }); 
+        console.log('✅ Conexión a la DB lista');
         
-        app.listen(4007, () => {
-            console.log('Servidor en puerto 4007');
+        app.listen(PORT, () => {
+            console.log(`🚀 Servidor en: http://localhost:${PORT}`);
         });
     } catch (error) {
-        console.error('No se pudo conectar:', error);
+        console.error('❌ No se pudo conectar:', error);
     }
 }
 
 startServer();
-
-// Rutas (Siempre al final)
-app.use('/', mordiskoRoter);
-
-app.listen(PORT, () => {
-    console.log(`🤖 Server is running on http://localhost:${PORT}`);
-});
