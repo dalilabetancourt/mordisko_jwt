@@ -76,21 +76,39 @@ const getFormProducto = async (req, res) => {
 const saveProducto = async (req, res) => {
     try {
         const { nombre, precio, CategoriaId, descripcion } = req.body;
-        let nombreImagen = null;
+        let nombreImagenFinal = null; // Empezamos asumiendo que no hay imagen
 
+        // 1. Verificamos si realmente se subió un archivo
         if (req.files && req.files.imagen) {
             const archivo = req.files.imagen;
-            nombreImagen = `${Date.now()}-${archivo.name}`;
-            const rutaRela = path.join(process.cwd(), 'src/public/img/productos', nombreImagen);
-            await archivo.mv(rutaRela);
+            
+            // 2. GENERACIÓN DEL NOMBRE AUTOMÁTICO (TIMESTAMP)
+            const timestamp = Date.now();
+            // Esto crea un nombre como: 1713504823.png
+            nombreImagenFinal = `${timestamp}${path.extname(archivo.name)}`;
+
+            // 3. Ruta donde se guarda físicamente
+            const rutaDestino = path.join(process.cwd(), 'src/public/img/productos', nombreImagenFinal);
+            
+            // 4. Movemos el archivo a la carpeta
+            await archivo.mv(rutaDestino);
         }
 
-        await Productos.create({ nombre, precio, CategoriaId, descripcion, imagen: nombreImagen });
+        // 5. GUARDAR EN BD
+        // Usamos 'nombreImagenFinal' para que se guarde el timestamp en la columna imagen
+        await Productos.create({ 
+            nombre, 
+            precio, 
+            CategoriaId, 
+            descripcion, 
+            imagen: nombreImagenFinal 
+        });
+
         res.redirect('/');
     } catch (error) {
-        res.status(500).send('Error al guardar producto');
+        console.error("ERROR AL GUARDAR:", error);
+        res.status(500).send('Error al guardar el producto');
     }
-
 };
 //editar producto
 const getFormEditarProducto = async (req, res) => {
@@ -116,28 +134,34 @@ const updateProducto = async (req, res) => {
         const { id } = req.params;
         const { nombre, descripcion, precio, CategoriaId } = req.body;
         const productoActual = await Productos.findByPk(id);
-        let nombreImagen = productoActual.imagen;
+        
+        let nombreImagenFinal = productoActual.imagen; // Mantenemos la imagen que ya tenía
 
         if (req.files && req.files.imagen) {
             const archivo = req.files.imagen;
-            nombreImagen = `${Date.now()}-${archivo.name}`;
-            const rutaNueva = path.join(process.cwd(), 'src/public/img/productos', nombreImagen);
+            
+            // IGUAL QUE EN EL SAVE: Generamos nombre nuevo con fecha
+            const timestamp = Date.now();
+            nombreImagenFinal = `${timestamp}${path.extname(archivo.name)}`;
+            
+            const rutaNueva = path.join(process.cwd(), 'src/public/img/productos', nombreImagenFinal);
             await archivo.mv(rutaNueva);
 
-            // Borrar imagen vieja si existía
+            // Borramos la imagen vieja para no llenar el servidor de basura
             if (productoActual.imagen) {
                 const rutaVieja = path.join(process.cwd(), 'src/public/img/productos', productoActual.imagen);
-                await fs.unlink(rutaVieja).catch(() => {});
+                await fs.unlink(rutaVieja).catch(() => console.log("La imagen vieja no existía físicamente"));
             }
         }
 
         await Productos.update(
-            { nombre, descripcion, precio, CategoriaId, imagen: nombreImagen },
+            { nombre, descripcion, precio, CategoriaId, imagen: nombreImagenFinal },
             { where: { id } }
         );
         res.redirect('/');
     } catch (error) {
-        res.status(500).send('Error al editar');
+        console.error("ERROR AL ACTUALIZAR:", error);
+        res.status(500).send('Error al editar el producto');
     }
 };
 //eliminar producto 
@@ -194,3 +218,4 @@ export {
     updateProducto,
     getAuth
 }
+
