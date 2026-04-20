@@ -4,6 +4,7 @@ import fileUpload from 'express-fileupload';
 import exphbs from 'express-handlebars'
 import jwt from 'jsonwebtoken'; 
 import mordiskoRoter from './routes/mordiskoRoutes.js'
+import apiRouter from './routes/apiRoutes.js'
 import db from './config/db.js'
 import path from 'path'
 
@@ -59,6 +60,9 @@ app.engine(
     }
   }),
 );
+
+// ...
+app.use('/api', apiRouter);
 
 // 6. Rutas
 app.use('/', mordiskoRoter);
