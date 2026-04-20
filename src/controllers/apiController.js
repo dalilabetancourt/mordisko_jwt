@@ -126,3 +126,23 @@ export const apiUpload = (req, res) => {
             data: { archivo: nombreFinal } });
     });
 }
+
+export const apiGetCategorias = async (req, res) => {
+    try {
+        const categorias = await Categoria.findAll();
+        res.json({ status: 'success', message: 'Categorías obtenidas', data: categorias });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message, data: null });
+    }
+}
+
+export const apiCreateCategoria = async (req, res) => {
+    try {
+        const { nombre } = req.body;
+        if (!nombre) return res.status(400).json({ status: 'error', message: 'nombre es obligatorio', data: null });
+        const nueva = await Categoria.create({ nombre });
+        res.status(201).json({ status: 'success', message: 'Categoría creada', data: nueva });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message, data: null });
+    }
+}

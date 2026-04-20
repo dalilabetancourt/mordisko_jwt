@@ -1,99 +1,50 @@
 # 🍦 Mordisko App
 
-Aplicación web desarrollada con Node.js y Express que simula la gestión de una heladería. Permite crear categorías, registrar productos mediante formularios y visualizar la información de forma dinámica en una interfaz renderizada con Handlebars.
+Aplicación web de gestión de heladería desarrollada con Node.js y Express.
+Incluye una API RESTful con autenticación JWT, subida de archivos y CRUD completo
+sobre productos y categorías.
 
 ---
 
-## 🚀 Objetivo del proyecto
+## 🚀 Tecnologías utilizadas
 
-Desarrollar una aplicación web funcional que permita:
-
-- Crear categorías de productos  
-- Registrar productos asociados a una categoría  
-- Mostrar los productos en una vista principal  
-- Renderizar contenido dinámico utilizando un motor de plantillas  
-
-Este proyecto forma parte del desarrollo progresivo del módulo 7, enfocado en estructura backend, renderizado dinámico y operaciones CRUD básicas.
-
----
-
-## 🧠 Tecnologías utilizadas
-
-- Node.js  
-- Express  
-- Handlebars (motor de plantillas)  
-- HTML5  
-- CSS3  
-
----
-
-## 🧩 Funcionalidades
-
-- 📂 Creación de categorías  
-- 🍨 Creación de productos con detalle (nombre, descripción, precio, etc.)  
-- 🔄 Renderizado dinámico de productos en la página principal  
-- 🧾 Formularios para ingreso de datos  
-- 🧱 Estructura modular de rutas y vistas  
-
----
-
-## 🗂️ Estructura del proyecto
-
-    mordisko-app/
-    │
-    ├── public/
-    │   └── css/
-    │       └── style.css
-    │
-    ├── config/
-    │   └── db.js
-    │
-    ├── models/
-    │   ├── categoria.js
-    │   ├── index.js
-    │   └── productos.js
-    │
-    ├── controller/
-    │   └── mordiskoController.js
-    │
-    ├── views/
-    │   ├── layouts/
-    │   │   └── main.hbs
-    │   ├── home.hbs
-    │   ├── formEditar.hbs
-    │   ├── formCategoria.hbs
-    │   └── formProductos.hbs
-    │
-    ├── routes/
-    │   └── (rutas del proyecto)
-    │
-    ├── index.js
-    │
-    └── package.json
-
-
+- Node.js (v18+)
+- Express.js
+- Sequelize ORM + PostgreSQL
+- JSON Web Tokens (JWT)
+- bcryptjs
+- express-fileupload
+- Handlebars (vistas web)
 
 ---
 
 ## ⚙️ Instalación y uso
 
-1. Clonar el repositorio:
-
+Clonar el repositorio:
 ```bash
-git clone https://github.com/dalilabetancourt/mordisko-
+git clone https://github.com/dalilabetancourt/tienda_mordisko
+cd tienda_mordisko
+```
+---
 
-Instalar dependencias:
-
-npm install
-
-Ejecutar el proyecto:
-
-npm run dev
-
-o
-
-npm start
-
-Abrir en el navegador:
-
-http://localhost:3000
+## 🗂️ Estructura del proyecto
+src/
+├── config/
+│   └── db.js
+├── controllers/
+│   ├── apiController.js
+│   └── mordiskoController.js
+├── middlewares/
+│   └── verifyToken.js
+├── models/
+│   ├── Categoria.js
+│   ├── Productos.js
+│   ├── index.js
+│   └── user.js
+├── routes/
+│   ├── apiRoutes.js
+│   └── mordiskoRoutes.js
+├── views/
+│   ├── layouts/
+│   └── *.hbs
+└── index.js

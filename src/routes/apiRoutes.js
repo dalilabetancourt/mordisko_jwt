@@ -6,7 +6,9 @@ import {
     apiCreateProducto,
     apiUpdateProducto,
     apiDeleteProducto,
-    apiUpload
+    apiUpload,
+    apiGetCategorias, 
+    apiCreateCategoria 
 } from '../controllers/apiController.js'
 import { getAuth } from '../controllers/mordiskoController.js'  // ← de acá viene getAuth
 
@@ -26,4 +28,6 @@ router.post('/upload', verifyToken, apiUpload)
 router.post('/auth/login', getAuth.loginPost)
 router.post('/auth/register', getAuth.register)
 
+router.get('/categorias', apiGetCategorias)
+router.post('/categorias', verifyToken, apiCreateCategoria)
 export default router
