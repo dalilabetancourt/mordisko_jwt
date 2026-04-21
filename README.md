@@ -131,13 +131,23 @@ Authorization: Bearer TU_TOKEN
 
 # 🧪 Pruebas con Postman
 
+##🔹 Acceso sin token (ruta protegida)
+
+
+![Despues](/src/public/img/local/tokrn_requerido.png)
+
+-----
 ![Antes](/src/public/img/local/login_postma_html.png)
+
+
 ![Despues](/src/public/img/local/login_postman_json.png)
 
 
 📸
-![Antes](/src/public/img/local/postman_producto_.png)
-![Despues](/src/public/img/local/postman_productos_.png)
+![Antes](/src/public/img/local/postman_productos_.png)
+
+![Despues](/src/public/img/local/postman_producto_.png)
+
 ![por id:](/src/public/img/local/postan_producto_id.png)
 ---
 
