@@ -12,12 +12,35 @@ const getAuth = {
     register: async (req, res) => {
         try {
             const { email, password } = req.body;
+
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
-            await User.create({ email, password: hashedPassword });
-            res.render('resultado', { mensaje: "Usuario registrado con éxito. ¡Inicia sesión!", esExito: true });
+
+            const user = await User.create({ email, password: hashedPassword });
+
+            // 🔥 RESPUESTA API
+            if (req.headers['accept']?.includes('application/json')) {
+                return res.status(201).json({
+                    status: 'success',
+                    message: 'Usuario registrado',
+                    data: { email: user.email }
+                });
+            }
+
+            // 🌐 RESPUESTA WEB
+            return res.render('resultado', {
+                mensaje: "Usuario registrado con éxito. ¡Inicia sesión!",
+                esExito: true
+            });
+
         } catch (error) {
-            res.render('resultado', { mensaje: 'Error al registrarse', esExito: false });
+            console.error("ERROR REGISTER:", error);
+
+            return res.status(500).json({
+                status: 'error',
+                message: error.message,
+                data: null
+            });
         }
     },
 
@@ -34,6 +57,7 @@ const getAuth = {
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
+
             if (isMatch) {
                 const token = jwt.sign(
                     { id: user.id, email: user.email },
@@ -46,17 +70,24 @@ const getAuth = {
                 if (req.headers['content-type']?.includes('application/json')) {
                     return res.json({ status: 'success', message: 'Login exitoso', data: { token } });
                 }
+
                 return res.redirect('/');
             }
 
             if (req.headers['content-type']?.includes('application/json')) {
                 return res.status(401).json({ status: 'error', message: 'Credenciales incorrectas', data: null });
             }
-            res.render('resultado', { mensaje: 'Credenciales incorrectas', esExito: false });
+
+            return res.render('resultado', { mensaje: 'Credenciales incorrectas', esExito: false });
 
         } catch (error) {
             console.error("Error en loginPost:", error);
-            res.status(500).json({ status: 'error', message: 'Error del servidor', data: null });
+
+            return res.status(500).json({
+                status: 'error',
+                message: 'Error del servidor',
+                data: null
+            });
         }
     },
 

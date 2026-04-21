@@ -6,6 +6,6 @@ import User from './user.js'
 Categoria.hasMany(Productos, { foreignKey: 'CategoriaId' });
 
 //un producto pertenece a una sola categoria 
-Productos.belongsTo(Categoria, { foreignKey: 'CategoriaId' });
+Productos.belongsTo(Categoria, { foreignKey: 'CategoriaId', as: 'categoria' });
 
 export { Categoria, Productos, User };
